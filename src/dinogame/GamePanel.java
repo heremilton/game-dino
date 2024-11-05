@@ -80,7 +80,19 @@ public class GamePanel extends JPanel implements ActionListener {
             e.printStackTrace();
         }
     }
-
+    // Método para reproduzir o som do pulo
+    private void playDeathSound() {
+        try {
+            // Caminho para o arquivo de som
+            File soundFile = new File("sounds/death.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // Método para desenhar os componentes do jogo na tela
     @Override
     protected void paintComponent(Graphics g2) {
@@ -153,6 +165,7 @@ public class GamePanel extends JPanel implements ActionListener {
             if (dino.getBounds().intersects(obstacle.getBounds())) {
                 gameOver = true;
                 timer.stop(); // Para o timer
+                playDeathSound();
                 // Exibe uma mensagem de Game Over e pergunta se o jogador quer reiniciar
                 int resposta = JOptionPane.showConfirmDialog(this, "Você perdeu!!! Pontuação: " + score + "\nQuer jogar novamente?");
                 if (resposta == JOptionPane.OK_OPTION) {
